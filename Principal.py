@@ -127,8 +127,21 @@ def resumen(v_proy):
         print(f"Lenguaje: {Modulo.lenguaje(i):<20} - Cant. de lineas: {v_leng[i]}")
 
 
-def opcion5():
-    pass
+def resumen_anio(v_proyectos):
+    anios = [0]*23
+    for i in range(len(v_proyectos)):
+        fecha = v_proyectos[i].fecha
+        if fecha[-2] == 0:
+            ids = int(fecha[-1])
+        else:
+            ids = int(fecha[-2] + fecha[-1])
+        anios[ids] += 1
+
+    for i in range(len(anios)):
+        if anios[i] > 0:
+            anio = 2000 + i
+            print('En el año', anio, 'se generaron', anios[i], 'proyectos')
+
 
 
 def listar_leng(v_proy):
@@ -199,7 +212,7 @@ def menu():
                 elif op == 4:
                     resumen(v_proyectos)
                 elif op == 5:
-                    opcion5()
+                    resumen_anio(v_proyectos)
                 elif op == 6:
                     listar_leng(v_proyectos)
                 elif op == 7:
