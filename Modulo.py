@@ -26,5 +26,9 @@ def encabezado():
 
 
 def lenguaje(leng):
+    lenguajes = obtener_lenguajes()
+    return lenguajes[leng]
+
+def obtener_lenguajes():
     lenguajes = ("Python", "Java", "C++", "Javascript", "Shell", "HTML", "Ruby", "Swift", "C#", "VB", "Go")
-    return lenguajes[int(leng)]
+    return lenguajes
