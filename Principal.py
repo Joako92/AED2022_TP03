@@ -30,34 +30,17 @@ determinar el año con mayor cantidad de proyectos actualizados,
 considerando mostrar todos los años si fuera más de uno con dicha cantidad."""
 import random
 import Modulo
-
-
-def validar():
-    num = int(input("Ingrese un numero mayor a 0: "))
-    while num < 1:
-        print("Error...")
-        num = int(input("Ingrese un numero mayor a 0: "))
-    return num
-
-
-def validar_entre(inf, sup):
-    num = int(input(f"Ingrese un numero entre {inf} y {sup}: "))
-    while inf > num or num > sup:
-        print("Error...")
-        num = int(input(f"Ingrese un numero entre {inf} y {sup}: "))
-    return num
+from Funciones import *
 
 
 def cargar_fecha():
-    dia = 0
-    while dia <= 0 or dia >= 31: 
-        dia = int(input("Ingrese dia (DD): "))
-    mes = 0
-    while mes <= 0 or mes >= 13:
-        mes = int(input("Ingrese mes (MM): "))
-    anio = 0
-    while anio <= 1999 or anio >= 2023:
-        anio = int(input("Ingrese año (AAAA): "))
+    print("Ingrese año (AAAA)...")
+    anio = validar_entre(2000, 2022)
+    print("Ingrese mes (MM)...")
+    mes = validar_entre(1, 12)
+    print("Ingrese dia (DD)...")
+    fin_mes = obtener_dias_por_mes_y_anio(mes, anio)
+    dia = validar_entre(1, fin_mes)
 
     return f"{dia:<2}/{mes:<2}/{anio:<4}"
 
@@ -72,7 +55,7 @@ def carga_manual(v_proy, cant):
         numero = int(input("Ingrese numero para el proyecto: "))
         titulo = input("Ingrese titulo del proyecto: ")
         fecha = cargar_fecha()
-        leng = input("Ingrese codigo del lenguaje (siendo 0:Python, 1:Java, 2:C++, 3:Javascript, 4:Shell, 5:HTML, 6:Ruby, 7:Swift, 8: C#, 9:VB, 10:Go): ")
+        leng = seleccionar_lenguaje()
         cant_lineas = int(input("Ingrese cantidad de lineas del codigo: "))
         v_proy.append(Modulo.Proyecto(numero, titulo, fecha, leng, cant_lineas))
 
@@ -99,15 +82,52 @@ def listar(v_proy):
         print(Modulo.to_string(v_proy[i]))
 
 
-def opcion3():
-    pass
+def seleccionar_lenguaje():
+    print("Ingrese numero del lenguaje que desea listar siendo:")
+    
+    lenguajes = Modulo.obtener_lenguajes()
+    for i in range(len(lenguajes)):
+        print(f"\t - {i}: {lenguajes[i]}")
+
+    return validar_entre(0, len(lenguajes)-1)
 
 
-def opcion4():
-    pass
+def buscar_numero(v_proy):
+    print("Ingrese numero de proyecto buscado...")
+    num = validar()
+    n = len(v_proy)
+    encontro = False
+    for i in range(n):
+        if v_proy[i].numero == num:
+            encontro = True
+            print("Proyecto encontrado...")
+            print("Ingrese nueva cantidad de lineas de codigo...")
+            cant_n = validar()
+            print("Cantidad anterior: ", v_proy[i].cant_lineas)
+            print("Cantidad nueva: ", cant_n)
+            v_proy[i].cant_lineas = cant_n
+            print()
+            print("Ingrese nueva fecha: ")
+            fecha_n = cargar_fecha()
+            print("Fecha anterior: ", v_proy[i].fecha)
+            print("Fecha nueva: ", fecha_n)
+            v_proy[i].fecha = fecha_n
+
+    if not encontro:
+        print("No hubo coincidencias...")
 
 
-def opcion5(v_proyectos):
+def resumen(v_proy):
+    v_leng = [0] * (len(Modulo.obtener_lenguajes())) # Crear vector de ceros
+    n = len(v_proy)
+    for i in range(n):
+        v_leng[v_proy[i].lenguaje] += v_proy[i].cant_lineas
+
+    for i in range(len(v_leng)):
+        print(f"Lenguaje: {Modulo.lenguaje(i):<20} - Cant. de lineas: {v_leng[i]}")
+
+
+def resumen_anio(v_proyectos):
     anios = [0]*23
     for i in range(len(v_proyectos)):
         fecha = v_proyectos[i].fecha
@@ -124,37 +144,54 @@ def opcion5(v_proyectos):
 
 
 
-def opcion6():
-    pass
+def listar_leng(v_proy):
+    ln = seleccionar_lenguaje()
+    n = len(v_proy)
+    for i in range(n-1):
+        for j in range(i+1, n):
+            if v_proy[j].numero < v_proy[i].numero:
+                v_proy[i], v_proy[j] = v_proy[j], v_proy[i]
+
+    print(Modulo.encabezado())
+    for i in range(n):
+        if v_proy[i].lenguaje == ln:
+            print(Modulo.to_string(v_proy[i]))
 
 
 def opcion7():
     pass
 
 
+# Mostrar menu y solicitar opcion
+def mostrar_menu():
+    menu = f"""\nMenu de opciones
+        {"-" * 50}
+        1. Cargar proyectos
+        2. Listar proyectos
+        3. Actualizar proyecto
+        4. Resumen por lenguaje
+        5. Resumen por año
+        6. Filtrar lenguaje
+        7. Productividad
+        8. Salir
+        {"-" * 50}
+        Ingrese opcion...
+        """
+    print(menu)
+    op = validar_entre(1, 8)
+
+    return op
+
 def menu():
     # Iniciar el vector que contiene los proyectos
     v_proyectos = []
     op = 0
     while op != 8:
-        print("\nMENU DE OPCIONES")
-        print("-" * 50)
-        print('1. Cargar proyectos')  # Debe permitir la carga manual o automatica
-        print('2. Listar proyectos')
-        print('3. Actualizar proyecto')
-        print('4. Resumen por lenguaje')
-        print('5. Resumen por año')
-        print('6. Filtrar lenguaje')
-        print('7. Productividad')
-        print('8. Salir')
-        print("-" * 50)
-        print('Ingrese opcion...')
-        op = validar_entre(1, 8)
+        op = mostrar_menu()
 
         if op == 1:
             print("Ingrese la cantidad de proyectos que desea controlar...")
             cant = validar()
-
             print("Ingrese 1 para carga manual - 2 para carga automatica...")
             elec = validar_entre(1, 2)
             if elec == 1:
@@ -162,36 +199,26 @@ def menu():
             if elec == 2:
                 carga_auto(v_proyectos, cant)
             print("---Carga completa---")
-            input("Pulse enter para continuar...")
 
         else:
-            if v_proyectos[0] is None:
+            if len(v_proyectos) == 0:
                 print("Aun no se han cargado proyectos...")
 
             else:
                 if op == 2:
                     listar(v_proyectos)
-                    input("Pulse enter para continuar...")
-
                 elif op == 3:
-                    opcion3()
-                    input("Pulse enter para continuar...")
-
+                    buscar_numero(v_proyectos)
                 elif op == 4:
-                    opcion4()
-                    input("Pulse enter para continuar...")
-
+                    resumen(v_proyectos)
                 elif op == 5:
-                    opcion5(v_proyectos)
-                    input("Pulse enter para continuar...")
-
+                    resumen_anio(v_proyectos)
                 elif op == 6:
-                    opcion6()
-                    input("Pulse enter para continuar...")
-
+                    listar_leng(v_proyectos)
                 elif op == 7:
                     opcion7()
-                    input("Pulse enter para continuar...")
+            
+        input("Pulse enter para continuar...")
 
         if op == 8:
             print("--- Programa finalizado ---")
