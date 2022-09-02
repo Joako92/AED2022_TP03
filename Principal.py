@@ -107,8 +107,21 @@ def opcion4():
     pass
 
 
-def opcion5():
-    pass
+def opcion5(v_proyectos):
+    anios = [0]*23
+    for i in range(len(v_proyectos)):
+        fecha = v_proyectos[i].fecha
+        if fecha[-2] == 0:
+            ids = int(fecha[-1])
+        else:
+            ids = int(fecha[-2] + fecha[-1])
+        anios[ids] += 1
+
+    for i in range(len(anios)):
+        if anios[i] > 0:
+            anio = 2000 + i
+            print('En el año', anio, 'se generaron', anios[i], 'proyectos')
+
 
 
 def opcion6():
@@ -169,7 +182,7 @@ def menu():
                     input("Pulse enter para continuar...")
 
                 elif op == 5:
-                    opcion5()
+                    opcion5(v_proyectos)
                     input("Pulse enter para continuar...")
 
                 elif op == 6:
