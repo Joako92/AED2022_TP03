@@ -11,15 +11,11 @@ def validar_numero(num):
 
 
 def validar_positivo(num):
-    if int(num) < 1:
-        return False
-    return True
+    return int(num) > 0
 
 
 def validar_conjunto(inf, sup, num):
-    if inf > int(num) or int(num) > sup:
-        return False
-    return True
+    return inf <= int(num) <= sup
 
 
 def validar():
@@ -38,3 +34,18 @@ def validar_entre(inf, sup):
         num = input(f"Ingrese un numero entre {inf} y {sup}: ")
 
     return int(num)
+
+
+def es_anio_bisiesto(anio):
+    return anio % 4 == 0 and anio % 100 != 0 or anio % 400 == 0
+
+
+def obtener_dias_por_mes_y_anio(mes, anio):
+    if mes in (1, 3, 5, 7, 8, 10, 12): # meses con 31 dias
+        return 31
+    elif mes in (4, 6, 9, 11): # meses con 30 dias
+        return 30
+    elif es_anio_bisiesto(anio):
+        return 29
+    else:
+        return 28
