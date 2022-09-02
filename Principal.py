@@ -112,8 +112,14 @@ def buscar_numero(v_proy):
         print("No hubo coincidencias...")
 
 
-def opcion4():
-    pass
+def resumen(v_proy):
+    v_leng = [0] * 11
+    n = len(v_proy)
+    for i in range(n):
+        v_leng[v_proy[i].lenguaje] += v_proy[i].cant_lineas
+
+    for i in range(len(v_leng)):
+        print(f"Lenguaje: {Modulo.lenguaje(i):<20}-Cantidad de lineas: {v_leng[i]}")
 
 
 def opcion5():
@@ -173,7 +179,7 @@ def menu():
                     input("Pulse enter para continuar...")
 
                 elif op == 4:
-                    opcion4()
+                    resumen(v_proyectos)
                     input("Pulse enter para continuar...")
 
                 elif op == 5:
