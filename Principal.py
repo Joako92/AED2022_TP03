@@ -112,16 +112,33 @@ def buscar_numero(v_proy):
         print("No hubo coincidencias...")
 
 
-def opcion4():
-    pass
+def resumen(v_proy):
+    v_leng = [0] * 11
+    n = len(v_proy)
+    for i in range(n):
+        v_leng[v_proy[i].lenguaje] += v_proy[i].cant_lineas
+
+    for i in range(len(v_leng)):
+        print(f"Lenguaje: {Modulo.lenguaje(i):<20}-Cantidad de lineas: {v_leng[i]}")
 
 
 def opcion5():
     pass
 
 
-def opcion6():
-    pass
+def listar_leng(v_proy):
+    print("Ingrese numero del lenguaje que desea listar (siendo 0:Python, 1:Java, 2:C++, 3:Javascript, 4:Shell, 5:HTML, 6:Ruby, 7:Swift, 8: C#, 9:VB, 10:Go)...")
+    ln = validar_entre(0, 10)
+    n = len(v_proy)
+    for i in range(n-1):
+        for j in range(i+1, n):
+            if v_proy[j].numero < v_proy[i].numero:
+                v_proy[i], v_proy[j] = v_proy[j], v_proy[i]
+
+    print(Modulo.encabezado())
+    for i in range(n):
+        if v_proy[i].lenguaje == ln:
+            print(Modulo.to_string(v_proy[i]))
 
 
 def opcion7():
@@ -173,7 +190,7 @@ def menu():
                     input("Pulse enter para continuar...")
 
                 elif op == 4:
-                    opcion4()
+                    resumen(v_proyectos)
                     input("Pulse enter para continuar...")
 
                 elif op == 5:
@@ -181,7 +198,7 @@ def menu():
                     input("Pulse enter para continuar...")
 
                 elif op == 6:
-                    opcion6()
+                    listar_leng(v_proyectos)
                     input("Pulse enter para continuar...")
 
                 elif op == 7:
