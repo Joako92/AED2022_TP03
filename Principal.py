@@ -30,34 +30,16 @@ determinar el año con mayor cantidad de proyectos actualizados,
 considerando mostrar todos los años si fuera más de uno con dicha cantidad."""
 import random
 import Modulo
-
-
-def validar():
-    num = int(input("Ingrese un numero mayor a 0: "))
-    while num < 1:
-        print("Error...")
-        num = int(input("Ingrese un numero mayor a 0: "))
-    return num
-
-
-def validar_entre(inf, sup):
-    num = int(input(f"Ingrese un numero entre {inf} y {sup}: "))
-    while inf > num or num > sup:
-        print("Error...")
-        num = int(input(f"Ingrese un numero entre {inf} y {sup}: "))
-    return num
+from Funciones import *
 
 
 def cargar_fecha():
-    dia = 0
-    while dia <= 0 or dia >= 31: 
-        dia = int(input("Ingrese dia (DD): "))
-    mes = 0
-    while mes <= 0 or mes >= 13:
-        mes = int(input("Ingrese mes (MM): "))
-    anio = 0
-    while anio <= 1999 or anio >= 2023:
-        anio = int(input("Ingrese año (AAAA): "))
+    print("Ingrese año (AAAA)...")
+    anio = validar_entre(2000, 2022)
+    print("Ingrese mes (MM)...")
+    mes = validar_entre(1, 12)
+    print("Ingrese dia (DD)...")
+    dia = validar_entre(1, 31)
 
     return f"{dia:<2}/{mes:<2}/{anio:<4}"
 
@@ -72,9 +54,12 @@ def carga_manual(v_proy, cant):
         numero = int(input("Ingrese numero para el proyecto: "))
         titulo = input("Ingrese titulo del proyecto: ")
         fecha = cargar_fecha()
-        leng = input("Ingrese codigo del lenguaje (siendo 0:Python, 1:Java, 2:C++, 3:Javascript, 4:Shell, 5:HTML, 6:Ruby, 7:Swift, 8: C#, 9:VB, 10:Go): ")
+        leng = int(input("Ingrese codigo del lenguaje (siendo 0:Python, 1:Java, 2:C++, 3:Javascript, 4:Shell, 5:HTML, 6:Ruby, 7:Swift, 8: C#, 9:VB, 10:Go): "))
         cant_lineas = int(input("Ingrese cantidad de lineas del codigo: "))
-        v_proy.append(Modulo.Proyecto(numero, titulo, fecha, leng, cant_lineas))
+        if v_proy[0] is None:
+            v_proy[0] = Modulo.Proyecto(numero, titulo, fecha, leng, cant_lineas)
+        else:
+            v_proy.append(Modulo.Proyecto(numero, titulo, fecha, leng, cant_lineas))
 
 
 def carga_auto(v_proy, cant):
@@ -84,7 +69,10 @@ def carga_auto(v_proy, cant):
         fecha = f"{random.randint(10, 30)}/{random.randint(1, 12)}/{random.randint(2000, 2022)}"
         leng = random.randint(0, 10)
         cant_lineas = random.randint(100, 999)
-        v_proy.append(Modulo.Proyecto(numero, titulo, fecha, leng, cant_lineas))
+        if v_proy[0] is None:
+            v_proy[0] = Modulo.Proyecto(numero, titulo, fecha, leng, cant_lineas)
+        else:
+            v_proy.append(Modulo.Proyecto(numero, titulo, fecha, leng, cant_lineas))
 
 
 def listar(v_proy):
@@ -99,8 +87,29 @@ def listar(v_proy):
         print(Modulo.to_string(v_proy[i]))
 
 
-def opcion3():
-    pass
+def buscar_numero(v_proy):
+    print("Ingrese numero de proyecto buscado...")
+    num = validar()
+    n = len(v_proy)
+    encontro = False
+    for i in range(n):
+        if v_proy[i].numero == num:
+            encontro = True
+            print("Proyecto encontrado...")
+            print("Ingrese nueva cantidad de lineas de codigo...")
+            cant_n = validar()
+            print("Cantidad anterior: ", v_proy[i].cant_lineas)
+            print("Cantidad nueva: ", cant_n)
+            v_proy[i].cant_lineas = cant_n
+            print()
+            print("Ingrese nueva fecha: ")
+            fecha_n = cargar_fecha()
+            print("Fecha anterior: ", v_proy[i].fecha)
+            print("Fecha nueva: ", fecha_n)
+            v_proy[i].fecha = fecha_n
+
+    if not encontro:
+        print("No hubo coincidencias...")
 
 
 def opcion4():
@@ -121,7 +130,7 @@ def opcion7():
 
 def menu():
     # Iniciar el vector que contiene los proyectos
-    v_proyectos = []
+    v_proyectos = [None]
     op = 0
     while op != 8:
         print("\nMENU DE OPCIONES")
@@ -141,7 +150,6 @@ def menu():
         if op == 1:
             print("Ingrese la cantidad de proyectos que desea controlar...")
             cant = validar()
-
             print("Ingrese 1 para carga manual - 2 para carga automatica...")
             elec = validar_entre(1, 2)
             if elec == 1:
@@ -161,7 +169,7 @@ def menu():
                     input("Pulse enter para continuar...")
 
                 elif op == 3:
-                    opcion3()
+                    buscar_numero(v_proyectos)
                     input("Pulse enter para continuar...")
 
                 elif op == 4:
