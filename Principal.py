@@ -49,9 +49,16 @@ def validar_entre(inf, sup):
 
 
 def cargar_fecha():
-    dia = int(input("Ingrese dia (DD): "))
-    mes = int(input("Ingrese mes (MM): "))
-    anio = int(input("Ingrese año (AAAA): "))
+    dia = 0
+    while dia <= 0 or dia >= 31: 
+        dia = int(input("Ingrese dia (DD): "))
+    mes = 0
+    while mes <= 0 or mes >= 13:
+        mes = int(input("Ingrese mes (MM): "))
+    anio = 0
+    while anio <= 1999 or anio >= 2023:
+        anio = int(input("Ingrese año (AAAA): "))
+
     return f"{dia:<2}/{mes:<2}/{anio:<4}"
 
 
@@ -60,26 +67,24 @@ def generar_titulo():
     return f"{random.choice(letras)}{random.choice(letras)}{random.choice(letras)}{random.randint(100, 999)}"
 
 
-def carga_manual(v_proy):
-    n = len(v_proy)
-    for i in range(n):
+def carga_manual(v_proy, cant):
+    for i in range(cant):
         numero = int(input("Ingrese numero para el proyecto: "))
         titulo = input("Ingrese titulo del proyecto: ")
         fecha = cargar_fecha()
         leng = input("Ingrese codigo del lenguaje (siendo 0:Python, 1:Java, 2:C++, 3:Javascript, 4:Shell, 5:HTML, 6:Ruby, 7:Swift, 8: C#, 9:VB, 10:Go): ")
         cant_lineas = int(input("Ingrese cantidad de lineas del codigo: "))
-        v_proy[i] = Modulo.Proyecto(numero, titulo, fecha, leng, cant_lineas)
+        v_proy.append(Modulo.Proyecto(numero, titulo, fecha, leng, cant_lineas))
 
 
-def carga_auto(v_proy):
-    n = len(v_proy)
-    for i in range(n):
+def carga_auto(v_proy, cant):
+    for i in range(cant):
         numero = random.randint(1000, 9999)
         titulo = generar_titulo()
         fecha = f"{random.randint(10, 30)}/{random.randint(1, 12)}/{random.randint(2000, 2022)}"
         leng = random.randint(0, 10)
         cant_lineas = random.randint(100, 999)
-        v_proy[i] = Modulo.Proyecto(numero, titulo, fecha, leng, cant_lineas)
+        v_proy.append(Modulo.Proyecto(numero, titulo, fecha, leng, cant_lineas))
 
 
 def listar(v_proy):
@@ -92,6 +97,14 @@ def listar(v_proy):
     print(Modulo.encabezado())
     for i in range(n):
         print(Modulo.to_string(v_proy[i]))
+
+
+def opcion3():
+    pass
+
+
+def opcion4():
+    pass
 
 
 def opcion5():
@@ -108,7 +121,7 @@ def opcion7():
 
 def menu():
     # Iniciar el vector que contiene los proyectos
-    v_proyectos = [None]
+    v_proyectos = []
     op = 0
     while op != 8:
         print("\nMENU DE OPCIONES")
@@ -128,19 +141,13 @@ def menu():
         if op == 1:
             print("Ingrese la cantidad de proyectos que desea controlar...")
             cant = validar()
-            if v_proyectos[0] is None:
-                cant = cant - 1
-                proyectos = [None] * cant
-                v_proyectos.extend(proyectos)
-            else:
-                proyectos = [None] * cant
-                v_proyectos.extend(proyectos)
+
             print("Ingrese 1 para carga manual - 2 para carga automatica...")
             elec = validar_entre(1, 2)
             if elec == 1:
-                carga_manual(v_proyectos)
+                carga_manual(v_proyectos, cant)
             if elec == 2:
-                carga_auto(v_proyectos)
+                carga_auto(v_proyectos, cant)
             print("---Carga completa---")
             input("Pulse enter para continuar...")
 

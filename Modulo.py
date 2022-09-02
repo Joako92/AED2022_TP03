@@ -28,7 +28,7 @@ def encabezado():
 
 def lenguaje(leng):
     lenguajes = ("Python", "Java", "C++", "Javascript", "Shell", "HTML", "Ruby", "Swift", "C#", "VB", "Go")
-    return lenguajes[leng]
+    return lenguajes[int(leng)]
 
 
 def generar_proyectos(cantidad, array):  # Esto genera los 'n' proyectos de forma aleatoria
