@@ -127,15 +127,21 @@ def resumen(v_proy):
         print(f"Lenguaje: {Modulo.lenguaje(i):<20} - Cant. de lineas: {v_leng[i]}")
 
 
-def resumen_anio(v_proyectos):
-    anios = [0]*23
-    for i in range(len(v_proyectos)):
-        fecha = v_proyectos[i].fecha
+def contar_por_anio(v_proy):
+    anios = [0] * 23
+    for i in range(len(v_proy)):
+        fecha = v_proy[i].fecha
         if fecha[-2] == 0:
             ids = int(fecha[-1])
         else:
             ids = int(fecha[-2] + fecha[-1])
         anios[ids] += 1
+    
+    return anios
+
+
+def resumen_anio(v_proyectos):
+    anios = contar_por_anio(v_proyectos)
 
     for i in range(len(anios)):
         if anios[i] > 0:
@@ -158,8 +164,19 @@ def listar_leng(v_proy):
             print(Modulo.to_string(v_proy[i]))
 
 
-def opcion7():
-    pass
+def opcion7(v_proy):
+    anios = contar_por_anio(v_proy)
+
+    may = None
+    for i in range(len(anios)):
+        if may is None or anios[i] > may:
+            may = anios[i]
+    
+    print('\nAños con mayor cantidad de proyectos actualizados: ')
+    for i in range(len(anios)):
+        if anios[i] == may:
+            anio = 2000 + i
+            print('\t- Año', anio, 'con', may, 'proyectos')
 
 
 # Mostrar menu y solicitar opcion
@@ -216,9 +233,9 @@ def menu():
                 elif op == 6:
                     listar_leng(v_proyectos)
                 elif op == 7:
-                    opcion7()
+                    opcion7(v_proyectos)
             
-        input("Pulse enter para continuar...")
+        input(">>Pulse enter para continuar...")
 
         if op == 8:
             print("--- Programa finalizado ---")
