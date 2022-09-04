@@ -52,18 +52,23 @@ def generar_titulo():
     return f"{random.choice(letras)}{random.choice(letras)}{random.choice(letras)}{random.randint(100, 999)}"
 
 
-# TO DO
-def numero_unico(v_proy):
-    num = validar()
-    # for i in v_proy.numero:
+def numero_unico(v_proy, num):
     # Validar qe el numero no este repetido en el arreglo
-    pass
+    n = len(v_proy)
+    for i in range(n):
+        if v_proy[i].numero == num:
+            return False
+    return True
 
 
 def carga_manual(v_proy, cant):
     for i in range(cant):
         print(f"\nIngrese numero para el proyecto {i+1}...")
         numero = validar()
+        while not numero_unico(v_proy, numero):
+            print("Numero de proyecto repetido...")
+            numero = validar()
+
         titulo = input(f"Ingrese titulo del proyecto {numero}: ")
         fecha = cargar_fecha()
         leng = seleccionar_lenguaje()
@@ -75,6 +80,8 @@ def carga_manual(v_proy, cant):
 def carga_auto(v_proy, cant):
     for i in range(cant):
         numero = random.randint(1000, 9999)
+        while not numero_unico(v_proy, numero):
+            numero = random.randint(1000, 9999)
         titulo = generar_titulo()
         fecha = f"{dos_digitos(random.randint(1, 30))}/{dos_digitos(random.randint(1, 12))}/{random.randint(2000, 2022)}"
         leng = random.randint(0, 10)
