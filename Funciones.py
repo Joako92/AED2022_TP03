@@ -41,11 +41,17 @@ def es_anio_bisiesto(anio):
 
 
 def obtener_dias_por_mes_y_anio(mes, anio):
-    if mes in (1, 3, 5, 7, 8, 10, 12): # meses con 31 dias
+    if mes in (1, 3, 5, 7, 8, 10, 12):  # meses con 31 dias
         return 31
-    elif mes in (4, 6, 9, 11): # meses con 30 dias
+    elif mes in (4, 6, 9, 11):  # meses con 30 dias
         return 30
     elif es_anio_bisiesto(anio):
         return 29
     else:
         return 28
+
+
+def dos_digitos(d):
+    if d < 10:
+        d = "0" + str(d)
+    return d
