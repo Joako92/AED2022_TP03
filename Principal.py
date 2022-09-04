@@ -168,7 +168,6 @@ def resumen_anio(v_proyectos):
         if anios[i] > 0:
             anio = 2000 + i
             print(f"-{anio:<8}{anios[i]}")
-            # print('En el año', anio, 'se generaron', anios[i], 'proyectos')
 
 
 def listar_leng(v_proy):
