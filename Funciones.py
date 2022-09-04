@@ -18,7 +18,7 @@ def validar_conjunto(inf, sup, num):
     return inf <= int(num) <= sup
 
 
-def validar():
+def validar(): # Validar que sea un numero entero positivo
     num = input("Ingrese un numero mayor a 0: ")
     while not validar_vacio(num) or not validar_numero(num) or not validar_positivo(num):
         print("Error...")
