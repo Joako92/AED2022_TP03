@@ -53,7 +53,7 @@ def generar_titulo():
 
 
 def numero_unico(v_proy, num):
-    # Validar qe el numero no este repetido en el arreglo
+    # Validar que el numero no este repetido en el arreglo
     n = len(v_proy)
     for i in range(n):
         if v_proy[i].numero == num:
@@ -168,7 +168,6 @@ def resumen_anio(v_proyectos):
         if anios[i] > 0:
             anio = 2000 + i
             print(f"-{anio:<8}{anios[i]}")
-            # print('En el año', anio, 'se generaron', anios[i], 'proyectos')
 
 
 def listar_leng(v_proy):
@@ -195,7 +194,7 @@ def opcion7(v_proy):
     
     print('\nAños con mayor cantidad de proyectos actualizados: ')
     for i in range(len(anios)):
-        if anios[i] == may:
+        if anios[i] == may: # Mostrar todos los años con la cantidad mas alta
             anio = 2000 + i
             print('\t- Año', anio, 'con', may, 'proyectos')
 
@@ -222,6 +221,7 @@ def mostrar_menu():
 
 
 def principal():
+    print("\n>>Bienvenido al sistema de control de proyectos<<\n")
     # Iniciar el vector que contiene los proyectos
     v_proyectos = []
     op = 0
@@ -239,7 +239,7 @@ def principal():
                 carga_auto(v_proyectos, cant)
             print("---Carga completa---")
 
-        if op == 8:
+        elif op == 8:
             print("--- Programa finalizado ---")
 
         else:
